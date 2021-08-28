@@ -40,7 +40,7 @@ see https://www.gnu.org/licenses/.  */
 #if ! defined (__GMP_WITHIN_CONFIGURE)
 #define __GMP_HAVE_HOST_CPU_FAMILY_power   0
 #define __GMP_HAVE_HOST_CPU_FAMILY_powerpc 0
-#define GMP_LIMB_BITS                      64
+#define GMP_LIMB_BITS                      32
 #define GMP_NAIL_BITS                      0
 #endif
 #define GMP_NUMB_BITS     (GMP_LIMB_BITS - GMP_NAIL_BITS)
@@ -149,12 +149,12 @@ typedef unsigned long int	mp_bitcnt_t;
    must leave this name for binary compatibility.  */
 typedef struct
 {
-    int _mp_alloc;		/* Number of *limbs* allocated and pointed
+  int _mp_alloc;		/* Number of *limbs* allocated and pointed
 				   to by the _mp_d field.  */
-    int _mp_size;			/* abs(_mp_size) is the number of limbs the
+  int _mp_size;			/* abs(_mp_size) is the number of limbs the
 				   last field points to.  If _mp_size is
 				   negative this is a negative number.  */
-    mp_limb_t *_mp_d;		/* Pointer to the limbs.  */
+  mp_limb_t *_mp_d;		/* Pointer to the limbs.  */
 } __mpz_struct;
 
 #endif /* __GNU_MP__ */
@@ -178,8 +178,8 @@ typedef long int		mp_exp_t;
 
 typedef struct
 {
-    __mpz_struct _mp_num;
-    __mpz_struct _mp_den;
+  __mpz_struct _mp_num;
+  __mpz_struct _mp_den;
 } __mpq_struct;
 
 typedef __mpq_struct MP_RAT;    /* gmp 1 source compatibility */
@@ -187,15 +187,15 @@ typedef __mpq_struct mpq_t[1];
 
 typedef struct
 {
-    int _mp_prec;			/* Max precision, in number of `mp_limb_t's.
+  int _mp_prec;			/* Max precision, in number of `mp_limb_t's.
 				   Set by mpf_init and modified by
 				   mpf_set_prec.  The area pointed to by the
 				   _mp_d field contains `prec' + 1 limbs.  */
-    int _mp_size;			/* abs(_mp_size) is the number of limbs the
+  int _mp_size;			/* abs(_mp_size) is the number of limbs the
 				   last field points to.  If _mp_size is
 				   negative this is a negative number.  */
-    mp_exp_t _mp_exp;		/* Exponent, in the base of `mp_limb_t'.  */
-    mp_limb_t *_mp_d;		/* Pointer to the limbs.  */
+  mp_exp_t _mp_exp;		/* Exponent, in the base of `mp_limb_t'.  */
+  mp_limb_t *_mp_d;		/* Pointer to the limbs.  */
 } __mpf_struct;
 
 /* typedef __mpf_struct MP_FLOAT; */
@@ -204,18 +204,18 @@ typedef __mpf_struct mpf_t[1];
 /* Available random number generation algorithms.  */
 typedef enum
 {
-    GMP_RAND_ALG_DEFAULT = 0,
-    GMP_RAND_ALG_LC = GMP_RAND_ALG_DEFAULT /* Linear congruential.  */
+  GMP_RAND_ALG_DEFAULT = 0,
+  GMP_RAND_ALG_LC = GMP_RAND_ALG_DEFAULT /* Linear congruential.  */
 } gmp_randalg_t;
 
 /* Random state struct.  */
 typedef struct
 {
-    mpz_t _mp_seed;	  /* _mp_d member points to state of the generator. */
-    gmp_randalg_t _mp_alg;  /* Currently unused. */
-    union {
-        void *_mp_lc;         /* Pointer to function pointers structure.  */
-    } _mp_algdata;
+  mpz_t _mp_seed;	  /* _mp_d member points to state of the generator. */
+  gmp_randalg_t _mp_alg;  /* Currently unused. */
+  union {
+    void *_mp_lc;         /* Pointer to function pointers structure.  */
+  } _mp_algdata;
 } __gmp_randstate_struct;
 typedef __gmp_randstate_struct gmp_randstate_t[1];
 
@@ -355,11 +355,11 @@ typedef __mpq_struct *mpq_ptr;
    inline" would be an acceptable substitute if the compiler (or linker)
    discards unused statics.  */
 
-/* gcc has __inline__ in all modes, including strict ansi.  Give a prototype
-   for an inline too, so as to correctly specify "dllimport" on windows, in
-   case the function is called rather than inlined.
-   GCC 4.3 and above with -std=c99 or -std=gnu99 implements ISO C99
-   inline semantics, unless -fgnu89-inline is used.  */
+ /* gcc has __inline__ in all modes, including strict ansi.  Give a prototype
+    for an inline too, so as to correctly specify "dllimport" on windows, in
+    case the function is called rather than inlined.
+    GCC 4.3 and above with -std=c99 or -std=gnu99 implements ISO C99
+    inline semantics, unless -fgnu89-inline is used.  */
 #ifdef __GNUC__
 #if (defined __GNUC_STDC_INLINE__) || (__GNUC__ == 4 && __GNUC_MINOR__ == 2) \
   || (defined __GNUC_GNU_INLINE__ && defined __cplusplus)
@@ -475,13 +475,13 @@ using std::FILE;
 
 #define mp_set_memory_functions __gmp_set_memory_functions
 __GMP_DECLSPEC void mp_set_memory_functions (void *(*) (size_t),
-                                             void *(*) (void *, size_t, size_t),
-                                             void (*) (void *, size_t)) __GMP_NOTHROW;
+				      void *(*) (void *, size_t, size_t),
+				      void (*) (void *, size_t)) __GMP_NOTHROW;
 
 #define mp_get_memory_functions __gmp_get_memory_functions
 __GMP_DECLSPEC void mp_get_memory_functions (void *(**) (size_t),
-                                             void *(**) (void *, size_t, size_t),
-                                             void (**) (void *, size_t)) __GMP_NOTHROW;
+				      void *(**) (void *, size_t, size_t),
+				      void (**) (void *, size_t)) __GMP_NOTHROW;
 
 #define mp_bits_per_limb __gmp_bits_per_limb
 __GMP_DECLSPEC extern const int mp_bits_per_limb;
@@ -2315,16 +2315,16 @@ __GMP_DECLSPEC_XX std::istream& operator>> (std::istream &, mpf_ptr);
 
 enum
 {
-    GMP_ERROR_NONE = 0,
-    GMP_ERROR_UNSUPPORTED_ARGUMENT = 1,
-    GMP_ERROR_DIVISION_BY_ZERO = 2,
-    GMP_ERROR_SQRT_OF_NEGATIVE = 4,
-    GMP_ERROR_INVALID_ARGUMENT = 8
+  GMP_ERROR_NONE = 0,
+  GMP_ERROR_UNSUPPORTED_ARGUMENT = 1,
+  GMP_ERROR_DIVISION_BY_ZERO = 2,
+  GMP_ERROR_SQRT_OF_NEGATIVE = 4,
+  GMP_ERROR_INVALID_ARGUMENT = 8
 };
 
 /* Define CC and CFLAGS which were used to build this version of GMP */
-#define __GMP_CC "aarch64-linux-android-gcc"
-#define __GMP_CFLAGS "-O2 -g -pedantic -fomit-frame-pointer -Wa,--noexecstack -ffunction-sections -funwind-tables -no-canonical-prefixes -fno-strict-aliasing -fstack-protector-strong -finline-limit=300 -funswitch-loops"
+#define __GMP_CC "i686-linux-android-gcc"
+#define __GMP_CFLAGS "-O2 -g -pedantic -Wa,--noexecstack -fomit-frame-pointer -ffunction-sections -funwind-tables -fstrict-aliasing -funswitch-loops -finline-limit=300 -no-canonical-prefixes -fstack-protector -march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32"
 
 /* Major version number is the value of __GNU_MP__ too, above. */
 #define __GNU_MP_VERSION            6
