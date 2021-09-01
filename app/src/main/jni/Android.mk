@@ -14,7 +14,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 ############################
 ifeq ($(GMP_WITH_CPLUSPLUS),yes)
   include $(CLEAR_VARS)
-  LOCAL_MODULE := gmp
-  LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libgmp.so
+  LOCAL_MODULE := gmpxx
+  LOCAL_SRC_FILES := $(TARGET_ARCH_ABI)/libgmpxx.so
   include $(PREBUILT_SHARED_LIBRARY)
 endif
